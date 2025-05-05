@@ -1,2 +1,14 @@
-Teste 
-Teste Segundo Commit
+12 Classes
+
+1. Pessoa (open class Pessoa)
+2. Paciente (Herda de Pessoa)
+3. Funcionario (Herda de Pessoa, open class)
+4. Medico (Herda de Funcionario)
+5. Enfermeiro (Herda de Funcionario)
+6. Administrativo (Herda de Funcionario)
+7. Hospital (class)
+8. Consulta (data class)
+9. Medicamento (data class)
+10. Prescricao (data class)
+11. Exame (data class)
+12. Especialidade (data class)

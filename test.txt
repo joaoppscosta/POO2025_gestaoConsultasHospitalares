@@ -14,3 +14,6 @@
 12. Especialidade (data class)
 
 FIM
+
+Funcionar tudo sozinho (Medico, Paciente, etc.) ir buscar ao disco
+Consulta só no fim

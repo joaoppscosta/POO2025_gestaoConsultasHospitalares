@@ -13,21 +13,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "joaoppscosta"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;joaoppscosta&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/joaoppscosta/POO2025_gestaoConsultasHospitalares.git",
-    "accountId": "d9971364-b0e7-412b-87e5-867a6e784418"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/joaoppscosta/POO2025_gestaoConsultasHospitalares.git&quot;,
+    &quot;accountId&quot;: &quot;d9971364-b0e7-412b-87e5-867a6e784418&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2wgacOiLXgcO8SWL6tlIxkPBf1F" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -43,6 +43,7 @@
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/joaoppscosta/Documents/Repositorios_UA/POO2025_gestaoConsultasHospitalares",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -68,6 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1746465749144</updated>
       <workItem from="1746465750192" duration="1208000" />
+      <workItem from="1746468520603" duration="62000" />
     </task>
     <servers />
   </component>

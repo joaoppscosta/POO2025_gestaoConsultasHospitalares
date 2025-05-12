@@ -1,5 +1,8 @@
 package com.example
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Prescricao(
     val id: Int,
     val medico: Medico,

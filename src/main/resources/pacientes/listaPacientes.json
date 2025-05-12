@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "nome": "Joaquim Ruela",
+    "genero": "Masculino",
+    "contacto": "910000000",
+    "numeroUtente": "111222333",
+    "dataNascimento": "15/10/1990"
+  },
+  {
+    "id": 2,
+    "nome": "Miguel Lima",
+    "genero": "Masculino",
+    "contacto": "920000000",
+    "numeroUtente": "000111222",
+    "dataNascimento": "09/05/2001"
+  }
+]

@@ -1,6 +1,7 @@
 package com.example
+import kotlinx.serialization.Serializable
 
-data class Especialidade(
-    val id: Int,
-    val nome: String
-)
+@Serializable
+enum class Especialidade {
+    CARDIOLOGIA, PEDIATRIA, DERMATOLOGIA, ORTOPEDIA, NEUROLOGIA
+}

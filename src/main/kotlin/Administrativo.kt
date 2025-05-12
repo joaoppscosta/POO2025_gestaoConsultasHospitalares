@@ -1,9 +1,10 @@
 package com.example
+import kotlinx.serialization.Serializable
 
-class Administrativo (
-    id: Int,
-    nome: String,
-    contacto: String,
-    numeroFuncionario: String,
-    val funcao: String
-) : Funcionario(id, nome, contacto, numeroFuncionario)
+@Serializable
+data class Administrativo (
+    val id: Int,
+    val nome: String,
+    val username: String,
+    val password: String
+)

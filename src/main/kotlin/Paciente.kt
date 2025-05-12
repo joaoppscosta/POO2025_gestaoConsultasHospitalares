@@ -1,11 +1,17 @@
 package com.example
 
-import java.util.Date
+import kotlinx.serialization.Serializable
 
-class Paciente(
-    id: Int,
-    nome: String,
-    contacto: String,
+@Serializable
+data class Paciente(
+    val id: Int,
+    val nome: String,
+    val genero: String,
+    val contacto: String,
     val numeroUtente: String,
-    val dataNascimento: Date
-) : Pessoa(id, nome, contacto)
+    val dataNascimento: String
+){
+    override fun toString(): String {
+        return "ID: $id | Nome: $nome | Género: $genero | Contacto: $contacto | Nº Utente: $numeroUtente | Data Nascimento: $dataNascimento"
+    }
+}

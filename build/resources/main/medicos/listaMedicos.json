@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nome": "Dr. João Costa",
+    "especialidade": "CARDIOLOGIA"
+  },
+  {
+    "id": 2,
+    "nome": "Dr. Hélder Matos",
+    "especialidade": "ORTOPEDIA"
+  }
+]

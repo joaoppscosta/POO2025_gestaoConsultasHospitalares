@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "paciente": {
+            "id": 1,
+            "nome": "Joaquim Ruela",
+            "genero": "Masculino",
+            "contacto": "910000000",
+            "numeroUtente": "111222333",
+            "dataNascimento": "15/10/1990"
+        },
+        "medico": {
+            "id": 2,
+            "nome": "Dr. Hélder Matos",
+            "especialidade": "ORTOPEDIA"
+        },
+        "dataHora": "11/05/2025 13:00",
+        "motivo": "Dor no Joelho Esquerdo - Atualizado"
+    },
+    {
+        "id": 2,
+        "paciente": {
+            "id": 2,
+            "nome": "Miguel Lima",
+            "genero": "Masculino",
+            "contacto": "920000000",
+            "numeroUtente": "000111222",
+            "dataNascimento": "09/05/2001"
+        },
+        "medico": {
+            "id": 1,
+            "nome": "Dr. João Costa",
+            "especialidade": "CARDIOLOGIA"
+        },
+        "dataHora": "12/05/2025 17:30",
+        "motivo": "Dor no Peito"
+    },
+    {
+        "id": 3,
+        "paciente": {
+            "id": 2,
+            "nome": "Miguel Lima",
+            "genero": "Masculino",
+            "contacto": "920000000",
+            "numeroUtente": "000111222",
+            "dataNascimento": "09/05/2001"
+        },
+        "medico": {
+            "id": 2,
+            "nome": "Dr. Hélder Matos",
+            "especialidade": "ORTOPEDIA"
+        },
+        "dataHora": "07/05/2025 12:30",
+        "motivo": "Dor nas Costas"
+    },
+    {
+        "id": 4,
+        "paciente": {
+            "id": 3,
+            "nome": "Ana Moura",
+            "genero": "Feminino",
+            "contacto": "913000030",
+            "numeroUtente": "114224343",
+            "dataNascimento": "12/02/1998"
+        },
+        "medico": {
+            "id": 1,
+            "nome": "Dr. João Costa",
+            "especialidade": "CARDIOLOGIA"
+        },
+        "dataHora": "12/05/2025 10:30",
+        "motivo": "Teste HTML"
+    }
+]

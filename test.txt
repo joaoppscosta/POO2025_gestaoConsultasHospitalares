@@ -1,19 +1,12 @@
-12 Classes
-
-1. Pessoa (open class Pessoa)
-2. Paciente (Herda de Pessoa)
-3. Funcionario (Herda de Pessoa, open class)
-4. Medico (Herda de Funcionario)
-5. Enfermeiro (Herda de Funcionario)
-6. Administrativo (Herda de Funcionario)
-7. Hospital (class)
-8. Consulta (data class)
-9. Medicamento (data class)
-10. Prescricao (data class)
-11. Exame (data class)
-12. Especialidade (data class)
-
-FIM
-
-Funcionar tudo sozinho (Medico, Paciente, etc.) ir buscar ao disco
-Consulta só no fim
+1. Paciente -> Dados do Paciente
+2. Médico -> Dados do Médico
+3. Consulta -> Marcação de Consulta
+4. Administrativo -> Funcionário Admin. com login
+5. Especialidade (Enum class) -> Tipo de médico
+6. Exame -> Exames que podem estar associados a uma consulta
+7. Medicamento -> Info sobre medicamentos
+8. Prescrição -> Medicamentos que podem ser prescritos numa consulta
+9. Agenda -> Horários disponíveis
+10. HorarioConsulta -> Blocos de Tempo (30 minutos)
+11. Sala ? -> Local da Consulta
+12. Hospital ? -> Hospital onde é feita a consulta

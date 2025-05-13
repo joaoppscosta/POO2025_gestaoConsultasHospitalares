@@ -1,0 +1,23 @@
+<!-- consultas.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Consultas</title>
+</head>
+<body>
+<h1>Consultas</h1>
+<ul>
+    <th:block th:each="consulta : ${consultas}">
+        <li>
+            ID: <span th:text="${consulta.id}"></span> |
+            Paciente: <span th:text="${consulta.paciente.nome}"></span> |
+            Médico: <span th:text="${consulta.medico.nome}"></span> |
+            Data: <span th:text="${consulta.dataHora}"></span> |
+            Motivo: <span th:text="${consulta.motivo}"></span>
+        </li>
+    </th:block>
+</ul>
+<a href="/consultas/novo">Adicionar nova consulta</a>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- pacientes.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pacientes</title>
+</head>
+<body>
+<h1>Pacientes</h1>
+<ul>
+    <th:block th:each="paciente : ${pacientes}">
+        <li th:text="'ID: ' + ${paciente.id} + ' | Nome: ' + ${paciente.nome} + ' | Género: ' + ${paciente.genero}"></li>
+    </th:block>
+</ul>
+<a href="/pacientes/novo">Adicionar novo paciente</a>
+</body>
+</html>

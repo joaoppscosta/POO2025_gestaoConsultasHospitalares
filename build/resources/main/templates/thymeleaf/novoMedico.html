@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Novo Médico</title>
+</head>
+<body>
+<h1>Adicionar Novo Médico</h1>
+<form action="/medicos" method="post">
+    <label>Nome:
+        <input type="text" name="nome" required>
+    </label><br>
+
+    <label>Especialidade:
+        <select name="especialidade" required>
+            <option th:each="esp : ${especialidades}" th:value="${esp}" th:text="${esp}"></option>
+        </select>
+    </label><br>
+
+    <button type="submit">Adicionar</button>
+</form>
+</body>
+</html>

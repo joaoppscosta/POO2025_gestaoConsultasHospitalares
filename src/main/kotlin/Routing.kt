@@ -217,7 +217,8 @@ fun Application.configureRouting() {
 
             val pacienteId = params["pacienteId"]?.toIntOrNull() ?: 0
             val medicoId = params["medicoId"]?.toIntOrNull() ?: 0
-            val dataHora = params["dataHora"] ?: ""
+            val data = params["data"] ?: ""
+            val hora = params["hora"] ?: ""
             val motivo = params["motivo"] ?: ""
 
             val caminhoPacientes = "./src/main/resources/pacientes/listaPacientes.json"
@@ -238,7 +239,8 @@ fun Application.configureRouting() {
                 id = 0,  // O ID será atribuído automaticamente
                 paciente = paciente,
                 medico = medico,
-                dataHora = dataHora,
+                data = data,
+                hora = hora,
                 motivo = motivo
             )
 
@@ -256,6 +258,55 @@ fun Application.configureRouting() {
 
             // Redireciona para a lista de consultas
             call.respondRedirect("/consultas")
+        }
+
+        get("/medicos") {
+            val caminho = "./src/main/resources/medicos/listaMedicos.json"
+            val jsonString = File(caminho).readText()
+            val listaMedicos = Json.decodeFromString<List<Medico>>(jsonString)
+
+            call.respond(ThymeleafContent("medicos.html", mapOf("medicos" to listaMedicos)))
+        }
+
+        get("/medicos/novo") {
+            val especialidades = Especialidade.values().toList()
+            call.respond(
+                ThymeleafContent(
+                    "novoMedico.html",
+                    mapOf("especialidades" to especialidades)
+                )
+            )
+        }
+
+
+        post("/medicos") {
+            val params = call.receiveParameters()
+
+            val nome = params["nome"] ?: ""
+            val especialidadeStr = params["especialidade"] ?: ""
+
+            val especialidade = try {
+                Especialidade.valueOf(especialidadeStr)
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, "Especialidade inválida.")
+                return@post
+            }
+
+            val novoMedico = Medico(
+                id = 0,
+                nome = nome,
+                especialidade = especialidade
+            )
+
+            val caminho = "./src/main/resources/medicos/listaMedicos.json"
+            val listaMedicos = Json.decodeFromString<MutableList<Medico>>(File(caminho).readText())
+
+            val medicoComId = novoMedico.copy(id = (listaMedicos.maxOfOrNull { it.id } ?: 0) + 1)
+            listaMedicos.add(medicoComId)
+
+            File(caminho).writeText(Json { prettyPrint = true }.encodeToString(listaMedicos))
+
+            call.respondRedirect("/medicos")
         }
     }
 }

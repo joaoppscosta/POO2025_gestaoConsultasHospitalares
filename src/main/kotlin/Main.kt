@@ -16,8 +16,8 @@ fun main() {
     )
 
     val consultas = mutableListOf(
-        Consulta(1, pacientes.first { it.id == 1}, medicos.first { it.id == 2}, "11/05/2025 12:00", "Dor no Joelho Esquerdo"),
-        Consulta(2, pacientes.first { it.id == 2}, medicos.first { it.id == 1}, "12/05/2025 17:30", "Dor no Peito")
+        Consulta(1, pacientes.first { it.id == 1}, medicos.first { it.id == 2}, "11/05/2025", "13:00", "Dor no Joelho Esquerdo"),
+        Consulta(2, pacientes.first { it.id == 2}, medicos.first { it.id == 1}, "12/05/2025", "12:00", "Dor no Peito")
     )
 
     val jsonPretty = Json {

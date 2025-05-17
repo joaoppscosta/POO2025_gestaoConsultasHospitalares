@@ -1,33 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Nova Consulta</title>
-</head>
-<body>
-    <h1>Nova Consulta</h1>
-    <form action="/consultas" method="post">
-        <label for="pacienteId">Paciente:</label>
-        <select name="pacienteId" id="pacienteId">
-            <th:block th:each="paciente : ${pacientes}">
-                <option th:value="${paciente.id}" th:text="${paciente.nome}"></option>
-            </th:block>
-        </select><br>
-
-        <label for="medicoId">Médico:</label>
-        <select name="medicoId" id="medicoId">
-            <th:block th:each="medico : ${medicos}">
-                <option th:value="${medico.id}" th:text="${medico.nome}"></option>
-            </th:block>
-        </select><br>
-
-        <label for="dataHora">Data e Hora:</label>
-        <input type="text" name="dataHora" id="dataHora"><br>
-
-        <label for="motivo">Motivo:</label>
-        <input type="text" name="motivo" id="motivo"><br>
-
-        <button type="submit">Criar Consulta</button>
-    </form>
-</body>
-</html>
+[
+    {
+        "id": 1,
+        "paciente": {
+            "id": 1,
+            "nome": "Joaquim Ruela",
+            "genero": "Masculino",
+            "contacto": "910000000",
+            "numeroUtente": "111222333",
+            "dataNascimento": "15/10/1990"
+        },
+        "medico": {
+            "id": 2,
+            "nome": "Dr. Hélder Matos",
+            "especialidade": "ORTOPEDIA"
+        },
+        "data": "11/05/2025",
+        "hora": "13:00",
+        "motivo": "Dor no Joelho Esquerdo - Atualizado"
+    },
+    {
+        "id": 2,
+        "paciente": {
+            "id": 2,
+            "nome": "Miguel Lima",
+            "genero": "Masculino",
+            "contacto": "920000000",
+            "numeroUtente": "000111222",
+            "dataNascimento": "09/05/2001"
+        },
+        "medico": {
+            "id": 1,
+            "nome": "Dr. João Costa",
+            "especialidade": "CARDIOLOGIA"
+        },
+        "data": "25/11/2025",
+        "hora": "14:00",
+        "motivo": "Teste"
+    }
+]

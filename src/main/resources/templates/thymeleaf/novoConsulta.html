@@ -9,7 +9,11 @@
 <h1>Adicionar Nova Consulta</h1>
 <form action="/consultas" method="post">
     Paciente ID: <input type="text" name="pacienteId"><br>
-    Médico ID: <input type="text" name="medicoId"><br>
+    <label>Médico:
+        <select name="medicoId" required>
+            <option th:each="medico : ${medicos}" th:value="${medico.id}" th:text="${medico.nome} + ' (ID: ' + ${medico.id} + ')'"></option>
+        </select>
+    </label><br>
     Data: <input type="text" name="data"><br>
     Hora: <input type="text" name="hora"><br>
     Motivo: <input type="text" name="motivo"><br>

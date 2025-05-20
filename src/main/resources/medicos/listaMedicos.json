@@ -11,7 +11,17 @@
     },
     {
         "id": 3,
-        "nome": "Quim Torpedo",
+        "nome": "Dr. Quim Torpedo",
         "especialidade": "ORTOPEDIA"
+    },
+    {
+        "id": 4,
+        "nome": "Dra. Andreia Coelho",
+        "especialidade": "DERMATOLOGIA"
+    },
+    {
+        "id": 5,
+        "nome": "Dr. João Baião",
+        "especialidade": "PEDIATRIA"
     }
 ]

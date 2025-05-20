@@ -1,12 +1,27 @@
 [
-  {
-    "id": 1,
-    "nome": "Dr. João Costa",
-    "especialidade": "CARDIOLOGIA"
-  },
-  {
-    "id": 2,
-    "nome": "Dr. Hélder Matos",
-    "especialidade": "ORTOPEDIA"
-  }
+    {
+        "id": 1,
+        "nome": "Dr. João Costa",
+        "especialidade": "CARDIOLOGIA"
+    },
+    {
+        "id": 2,
+        "nome": "Dr. Hélder Matos",
+        "especialidade": "ORTOPEDIA"
+    },
+    {
+        "id": 3,
+        "nome": "Dr. Quim Torpedo",
+        "especialidade": "ORTOPEDIA"
+    },
+    {
+        "id": 4,
+        "nome": "Dra. Andreia Coelho",
+        "especialidade": "DERMATOLOGIA"
+    },
+    {
+        "id": 5,
+        "nome": "Dr. João Baião",
+        "especialidade": "PEDIATRIA"
+    }
 ]

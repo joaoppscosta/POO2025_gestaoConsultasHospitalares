@@ -12,6 +12,9 @@ object Repositorio {
     private const val caminhoMedicos = "./src/main/resources/medicos/listaMedicos.json"
 
     fun lerMedicos(): MutableList<Medico> {
+        if (!File(caminhoMedicos).exists()) {
+            File(caminhoMedicos).writeText("[]")
+        }
         return json.decodeFromString(File(caminhoMedicos).readText())
     }
 
@@ -23,6 +26,9 @@ object Repositorio {
     private const val caminhoPacientes = "./src/main/resources/pacientes/listaPacientes.json"
 
     fun lerPacientes(): MutableList<Paciente> {
+        if (!File(caminhoPacientes).exists()) {
+            File(caminhoPacientes).writeText("[]")
+        }
         return json.decodeFromString(File(caminhoPacientes).readText())
     }
 
@@ -34,6 +40,9 @@ object Repositorio {
     private const val caminhoConsultas = "./src/main/resources/consultas/listaConsultas.json"
 
     fun lerConsultas(): MutableList<Consulta> {
+        if(!File(caminhoConsultas).exists()) {
+            File(caminhoConsultas).writeText("[]")
+        }
         return json.decodeFromString(File(caminhoConsultas).readText())
     }
 

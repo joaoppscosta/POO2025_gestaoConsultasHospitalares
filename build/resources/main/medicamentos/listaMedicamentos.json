@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "nome": "Paracetamol",
+    "dosagem": "500mg"
+  },
+  {
+    "id": 2,
+    "nome": "Ibuprofeno",
+    "dosagem": "200mg"
+  },
+  {
+    "id": 3,
+    "nome": "Amoxicilina",
+    "dosagem": "875mg + 125mg"
+  },
+  {
+    "id": 4,
+    "nome": "Tramadol",
+    "dosagem": "500mg"
+  }
+]

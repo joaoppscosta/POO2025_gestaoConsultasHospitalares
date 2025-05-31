@@ -60,6 +60,68 @@ fun Application.configureRouting() {
             call.respond(agenda)
         }
 
+        get("/medicos/editar/{id}") {
+            val medicoId = call.parameters["id"]?.toIntOrNull()
+
+            if (medicoId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID do médico inválido.")
+                return@get
+            }
+
+            val listaMedicos = Repositorio.lerMedicos()
+
+            val medico = listaMedicos.find { it.id == medicoId }
+            if (medico == null) {
+                call.respond(HttpStatusCode.NotFound, "Médico não encontrado.")
+            } else {
+                call.respond(
+                    ThymeleafContent(
+                        "editarMedico.html",
+                        mapOf(
+                            "medico" to medico,
+                            "especialidades" to Especialidade.values().toList()
+                        )
+                    )
+                )
+            }
+        }
+
+        post("/medicos/editar/{id}") {
+            val params = call.receiveParameters()
+            val listaMedicos = Repositorio.lerMedicos()
+
+            val medicoId = call.parameters["id"]?.toIntOrNull()
+            if (medicoId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@post
+            }
+
+            val index = listaMedicos.indexOfFirst { it.id == medicoId }
+            if (index == -1) {
+                call.respond(HttpStatusCode.NotFound, "Médico não encontrado.")
+                return@post
+            }
+
+            val especialidadeStr = params["especialidade"] ?: ""
+            val especialidade = try {
+                Especialidade.valueOf(especialidadeStr)
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, "Especialidade inválida.")
+                return@post
+            }
+
+            val medicoAtualizado = Medico(
+                id = medicoId,
+                nome = params["nome"] ?: "",
+                especialidade = especialidade
+            )
+
+            listaMedicos[index] = medicoAtualizado
+            Repositorio.guardarMedicos(listaMedicos)
+
+            call.respondRedirect("/medicos")
+        }
+
         //TESTE ---------------------- TESTE
         get("/medicos/{id}/consultas"){
             val medicoId = call.parameters["id"]?.toIntOrNull()
@@ -72,9 +134,44 @@ fun Application.configureRouting() {
             val listaConsultas = Repositorio.lerConsultas()
             val consultasDoMedico = listaConsultas.filter { it.medico.id == medicoId }
             call.respond(consultasDoMedico)
-
-
         }
+
+        // Apagar Médicos
+        post("/medicos/apagar/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@post
+            }
+
+            val listaConsultas = Repositorio.lerConsultas()
+            val estaEmConsulta = listaConsultas.any { it.medico.id == id }
+
+            if (estaEmConsulta) {
+                call.respond(
+                    ThymeleafContent(
+                        "medicos.html",
+                        mapOf(
+                            "medicos" to Repositorio.lerMedicos(),
+                            "erro" to "Não é possível apagar: este médico tem consultas associadas."
+                        )
+                    )
+                )
+                return@post
+            }
+
+            val lista = Repositorio.lerMedicos()
+            val removido = lista.removeIf { it.id == id }
+
+            if (!removido) {
+                call.respond(HttpStatusCode.NotFound, "Médico não encontrado.")
+            } else {
+                Repositorio.guardarMedicos(lista)
+                call.respondRedirect("/medicos")
+            }
+        }
+
+
         // ------------ PACIENTES ------------
 
         get("/listaPacientes") {
@@ -101,6 +198,95 @@ fun Application.configureRouting() {
                 call.respond(HttpStatusCode.BadRequest, resultado.exceptionOrNull()?.message ?: "Erro ao criar paciente")
             }
         }
+
+        get("/pacientes/editar/{id}") {
+            val pacienteId = call.parameters["id"]?.toIntOrNull()
+
+            if (pacienteId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID do paciente inválido.")
+                return@get
+            }
+
+            val listaPacientes = Repositorio.lerPacientes()
+
+            val paciente = listaPacientes.find { it.id == pacienteId }
+            if (paciente == null) {
+                call.respond(HttpStatusCode.NotFound, "Paciente não encontrado.")
+            } else {
+                call.respond(
+                    ThymeleafContent("editarPaciente.html", mapOf("paciente" to paciente))
+                )
+            }
+        }
+
+        post("/pacientes/editar/{id}") {
+            val params = call.receiveParameters()
+
+            val listaPacientes = Repositorio.lerPacientes()
+
+            val pacienteId = call.parameters["id"]?.toIntOrNull()
+            if (pacienteId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID Inválido.")
+                return@post
+            }
+
+            val index = listaPacientes.indexOfFirst { it.id == pacienteId }
+            if (index == -1) {
+                call.respond(HttpStatusCode.NotFound, "Paciente não encontrado.")
+                return@post
+            }
+
+            val pacienteAtualizado = Paciente(
+                id = pacienteId,
+                nome = params["nome"] ?: "",
+                genero = params["genero"] ?: "",
+                contacto = params["contacto"] ?: "",
+                numeroUtente = params["numeroUtente"] ?: "",
+                dataNascimento = params["dataNascimento"] ?: ""
+            )
+
+            listaPacientes[index] = pacienteAtualizado
+            Repositorio.guardarPacientes(listaPacientes)
+
+            call.respondRedirect("/pacientes")
+        }
+
+        // Apagar Pacientes
+
+        post("/pacientes/apagar/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@post
+            }
+
+            val listaConsultas = Repositorio.lerConsultas()
+            val estaEmConsulta = listaConsultas.any { it.paciente.id == id }
+
+            if (estaEmConsulta) {
+                call.respond(
+                    ThymeleafContent(
+                        "pacientes.html",
+                        mapOf(
+                            "pacientes" to Repositorio.lerPacientes(),
+                            "erro" to "Não é possível apagar: este paciente tem consultas associadas."
+                        )
+                    )
+                )
+                return@post // 🔥 Impede que continue
+            }
+
+            val listaPacientes = Repositorio.lerPacientes()
+            val removido = listaPacientes.removeIf { it.id == id }
+
+            if (!removido) {
+                call.respond(HttpStatusCode.NotFound, "Paciente não encontrado.")
+            } else {
+                Repositorio.guardarPacientes(listaPacientes)
+                call.respondRedirect("/pacientes")
+            }
+        }
+
 
         // ------------ CONSULTAS ------------
 
@@ -146,45 +332,212 @@ fun Application.configureRouting() {
             }
         }
 
-        delete("/listaConsultas/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null) {
+        get("/consultas/editar/{id}") {
+            val consultaId = call.parameters["id"]?.toIntOrNull()
+
+            if (consultaId == null) {
                 call.respond(HttpStatusCode.BadRequest, "ID inválido.")
-                return@delete
+                return@get
             }
 
             val listaConsultas = Repositorio.lerConsultas()
-            val consultaRemovida = listaConsultas.removeIf { it.id == id }
+            val consulta = listaConsultas.find { it.id == consultaId }
 
-            if (!consultaRemovida) {
+            if (consulta == null) {
                 call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
-                return@delete
+                return@get
             }
 
-            Repositorio.guardarConsultas(listaConsultas)
-            call.respond(HttpStatusCode.OK, "Consulta com ID $id removida com sucesso.")
+            val listaPacientes = Repositorio.lerPacientes()
+            val listaMedicos = Repositorio.lerMedicos()
+
+            call.respond(
+                ThymeleafContent(
+                    "editarConsulta.html",
+                    mapOf(
+                        "consulta" to consulta,
+                        "pacientes" to listaPacientes,
+                        "medicos" to listaMedicos
+                    )
+                )
+            )
         }
 
-        put("/listaConsultas/{id}") {
+
+        post("/consultas/editar/{id}") {
+            val consultaId = call.parameters["id"]?.toIntOrNull()
+            if (consultaId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@post
+            }
+
+            val params = call.receiveParameters()
+
+            val pacienteId = params["pacienteId"]?.toIntOrNull() ?: 0
+            val medicoId = params["medicoId"]?.toIntOrNull() ?: 0
+            val data = params["data"] ?: ""
+            val hora = params["hora"] ?: ""
+            val motivo = params["motivo"] ?: ""
+
+            val listaPacientes = Repositorio.lerPacientes()
+            val listaMedicos = Repositorio.lerMedicos()
+            val listaConsultas = Repositorio.lerConsultas()
+
+            val paciente = listaPacientes.find { it.id == pacienteId }
+            val medico = listaMedicos.find { it.id == medicoId }
+
+            if (paciente == null || medico == null) {
+                call.respond(HttpStatusCode.BadRequest, "Paciente ou médico inválido.")
+                return@post
+            }
+
+            val index = listaConsultas.indexOfFirst { it.id == consultaId }
+            if (index == -1) {
+                call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
+                return@post
+            }
+
+            val consultaAtualizada = Consulta(
+                id = consultaId,
+                paciente = paciente,
+                medico = medico,
+                data = data,
+                hora = hora,
+                motivo = motivo
+            )
+
+            listaConsultas[index] = consultaAtualizada
+            Repositorio.guardarConsultas(listaConsultas)
+
+            call.respondRedirect("/consultas")
+        }
+
+         //Apagar consultas
+        post("/consultas/apagar/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
+
             if (id == null) {
                 call.respond(HttpStatusCode.BadRequest, "ID inválido.")
-                return@put
+                return@post
+            }
+
+            val lista = Repositorio.lerConsultas()
+            val removido = lista.removeIf { it.id == id }
+
+            if (!removido) {
+                call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
+            } else {
+                Repositorio.guardarConsultas(lista)
+                call.respondRedirect("/consultas")
+            }
+        }
+
+
+        // ------------ MEDICAMENTOS ------------
+        get("/medicamentos") {
+            val lista = Repositorio.lerMedicamentos()
+            call.respond(ThymeleafContent("medicamentos.html", mapOf("medicamentos" to lista)))
+        }
+
+
+        // ------------ PRESCRIÇÕES ------------
+        get("/prescricoes/nova") {
+            val consultaId = call.request.queryParameters["consultaId"]?.toIntOrNull()
+            val consultas = Repositorio.lerConsultas()
+            val medicamentos = Repositorio.lerMedicamentos()
+
+            call.respond(
+                ThymeleafContent(
+                    "novaPrescricao.html",
+                    mapOf(
+                        "consultas" to consultas,
+                        "medicamentos" to medicamentos,
+                        "consultaIdSelecionada" to (consultaId ?: -1)
+                    )
+                )
+            )
+        }
+
+        get("/prescricoes/nova/{id}") {
+            val consultaId = call.parameters["id"]?.toIntOrNull()
+            if (consultaId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID de consulta inválido.")
+                return@get
+            }
+
+            val consulta = Repositorio.lerConsultas().find { it.id == consultaId }
+            if (consulta == null) {
+                call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
+                return@get
+            }
+
+            val medicamentosSelecionadosIds = consulta.prescricao?.listaMedicamentos?.map { it.id }?.toSet() ?: emptySet()
+
+            val medicamentos = Repositorio.lerMedicamentos()
+            call.respond(
+                ThymeleafContent(
+                    "novaPrescricao.html",
+                    mapOf(
+                        "consulta" to consulta,
+                        "medicamentos" to medicamentos,
+                        "medicamentosSelecionados" to medicamentosSelecionadosIds
+                    )
+                )
+            )
+        }
+
+        post("/prescricoes/apagar/{id}") {
+            val consultaId = call.parameters["id"]?.toIntOrNull()
+            if (consultaId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@post
             }
 
             val listaConsultas = Repositorio.lerConsultas()
-            val consultaIndex = listaConsultas.indexOfFirst { it.id == id }
+            val index = listaConsultas.indexOfFirst { it.id == consultaId }
+
+            if (index == -1) {
+                call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
+                return@post
+            }
+
+            val consulta = listaConsultas[index]
+            val consultaAtualizada = consulta.copy(prescricao = null)
+            listaConsultas[index] = consultaAtualizada
+
+            Repositorio.guardarConsultas(listaConsultas)
+            call.respondRedirect("/consultas")
+        }
+
+        post("/prescricoes") {
+            val params = call.receiveParameters()
+            val consultaId = params["consultaId"]?.toIntOrNull()
+            val medsIds = params.getAll("medicamentos")?.mapNotNull { it.toIntOrNull() } ?: emptyList()
+
+            val consultas = Repositorio.lerConsultas()
+            val consultaIndex = consultas.indexOfFirst { it.id == consultaId }
 
             if (consultaIndex == -1) {
                 call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
-                return@put
+                return@post
             }
 
-            val consultaAtualizada = call.receive<Consulta>()
-            listaConsultas[consultaIndex] = consultaAtualizada
-            Repositorio.guardarConsultas(listaConsultas)
+            val medicamentosSelecionados = Repositorio.lerMedicamentos().filter { it.id in medsIds }
 
-            call.respond(HttpStatusCode.OK, "Consulta com ID $id atualizada com sucesso.")
+            val consulta = consultas[consultaIndex]
+            val novaPrescricao = Prescricao(
+                id = consultaId ?: 0,
+                medico = consulta.medico,
+                paciente = consulta.paciente,
+                listaMedicamentos = medicamentosSelecionados
+            )
+
+            // Atualiza consulta com nova prescrição
+            val consultaAtualizada = consulta.copy(prescricao = novaPrescricao)
+            consultas[consultaIndex] = consultaAtualizada
+            Repositorio.guardarConsultas(consultas)
+
+            call.respondRedirect("/consultas")
         }
     }
 }

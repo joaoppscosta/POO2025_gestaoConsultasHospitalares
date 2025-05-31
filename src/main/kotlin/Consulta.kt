@@ -7,7 +7,7 @@ data class Consulta(
     val id: Int,
     val paciente: Paciente,
     val medico: Medico,
-    val data: String, // Formato "DD-MM-YYYY"
+    val data: String, // Formato "DD/MM/YYYY"
     val hora: String, // Formato "HH:mm"
     val motivo: String,
     val prescricao: Prescricao? = null,

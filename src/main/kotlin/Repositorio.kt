@@ -49,5 +49,21 @@ object Repositorio {
     fun guardarConsultas(lista: List<Consulta>) {
         File(caminhoConsultas).writeText(json.encodeToString(lista))
     }
+
+    // ----------- MEDICAMENTOS -----------
+    private const val caminhoMedicamentos = "./src/main/resources/medicamentos/listaMedicamentos.json"
+
+    fun lerMedicamentos(): MutableList<Medicamento> {
+        if (!File(caminhoMedicamentos).exists()) {
+            File(caminhoMedicamentos).writeText("[]")
+        }
+        return json.decodeFromString(File(caminhoMedicamentos).readText())
+    }
+
+    fun guardarMedicamentos(lista: List<Medicamento>) {
+        File(caminhoMedicamentos).writeText(json.encodeToString(lista))
+    }
 }
+
+
 

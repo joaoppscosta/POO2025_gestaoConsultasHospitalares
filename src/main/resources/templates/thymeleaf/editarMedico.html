@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Médico</title>
+</head>
+<body>
+<h1>Editar Médico</h1>
+
+<form th:action="'/medicos/editar/' + ${medico.id}" method="post">
+    <label>Nome:</label>
+    <input type="text" name="nome" th:value="${medico.nome}" required><br>
+
+    <label>Especialidade:</label>
+    <select name="especialidade">
+        <option th:each="esp : ${especialidades}"
+                th:value="${esp}"
+                th:text="${esp}"
+                th:selected="${esp} == ${medico.especialidade}">
+        </option>
+    </select><br>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<br>
+<a href="/medicos">Voltar à lista</a>
+</body>
+</html>

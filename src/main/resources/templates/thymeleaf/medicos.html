@@ -5,19 +5,36 @@
 </head>
 <body>
 <h1>Lista de Médicos</h1>
+
+<div th:if="${erro}" style="color:red;">
+    <p th:text="${erro}"></p>
+</div>
+
 <table border="1">
     <tr>
         <th>ID</th>
         <th>Nome</th>
         <th>Especialidade</th>
+        <th>Ações</th> <!-- nova coluna -->
     </tr>
     <tr th:each="medico : ${medicos}">
-        <td th:text="${medico.id}">Teste</td>
-        <td th:text="${medico.nome}">Teste</td>
-        <td th:text="${medico.especialidade}">TESTE</td>
+        <td th:text="${medico.id}">ID</td>
+        <td th:text="${medico.nome}">Nome</td>
+        <td th:text="${medico.especialidade}">Especialidade</td>
+        <td>
+            <form th:action="'/medicos/editar/' + ${medico.id}" method="get" style="display:inline;">
+                <button type="submit">Editar</button>
+            </form>
+            <form th:action="'/medicos/apagar/' + ${medico.id}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Apagar este médico?')">Apagar</button>
+            </form>
+        </td>
     </tr>
 </table>
 
+<br>
 <a href="/medicos/novo">Adicionar novo médico</a>
+<br><br>
+<a href="/">Voltar ao Menu principal</a>
 </body>
 </html>

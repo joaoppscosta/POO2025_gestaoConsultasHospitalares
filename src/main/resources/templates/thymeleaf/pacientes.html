@@ -1,17 +1,46 @@
-<!-- pacientes.html -->
 <!DOCTYPE html>
-<html lang="pt">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Lista de Pacientes</title>
 </head>
 <body>
-<h1>Pacientes</h1>
-<ul>
-    <th:block th:each="paciente : ${pacientes}">
-        <li th:text="'ID: ' + ${paciente.id} + ' | Nome: ' + ${paciente.nome} + ' | Género: ' + ${paciente.genero}"></li>
-    </th:block>
-</ul>
+<h1>Lista de Pacientes</h1>
+
+<div th:if="${erro}" style="color:red;">
+    <p th:text="${erro}"></p>
+</div>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Género</th>
+        <th>Contacto</th>
+        <th>Nº Utente</th>
+        <th>Data Nascimento</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="paciente : ${pacientes}">
+        <td th:text="${paciente.id}">ID</td>
+        <td th:text="${paciente.nome}">Nome</td>
+        <td th:text="${paciente.genero}">Género</td>
+        <td th:text="${paciente.contacto}">Contacto</td>
+        <td th:text="${paciente.numeroUtente}">Nº Utente</td>
+        <td th:text="${paciente.dataNascimento}">Data</td>
+        <td>
+            <form th:action="'/pacientes/editar/' + ${paciente.id}" method="get" style="display:inline;">
+                <button type="submit">Editar</button>
+            </form>
+            <form th:action="'/pacientes/apagar/' + ${paciente.id}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Apagar este paciente?')">Apagar</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
 <a href="/pacientes/novo">Adicionar novo paciente</a>
+<br><br>
+<a href="/">Voltar ao Menu principal</a>
 </body>
 </html>

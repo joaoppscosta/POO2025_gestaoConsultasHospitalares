@@ -1,24 +1,74 @@
-<!-- consultas.html -->
 <!DOCTYPE html>
-<html lang="pt">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Lista de Consultas</title>
 </head>
 <body>
 <h1>Consultas</h1>
-<ul>
-    <th:block th:each="consulta : ${consultas}">
-        <li>
-            ID: <span th:text="${consulta.id}"></span> |
-            Paciente: <span th:text="${consulta.paciente.nome}"></span> |
-            Médico: <span th:text="${consulta.medico.nome}"></span> |
-            Data: <span th:text="${consulta.data}"></span> |
-            Hora: <span th:text="${consulta.hora}"></span> |
-            Motivo: <span th:text="${consulta.motivo}"></span>
-        </li>
-    </th:block>
-</ul>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Motivo</th>
+        <th>Prescrição</th>
+        <th>Ações</th>
+    </tr>
+
+    <tr th:each="consulta : ${consultas}">
+        <td th:text="${consulta.id}">ID</td>
+        <td th:text="${consulta.paciente.nome}">Paciente</td>
+        <td th:text="${consulta.medico.nome}">Médico</td>
+        <td th:text="${consulta.data}">Data</td>
+        <td th:text="${consulta.hora}">Hora</td>
+        <td th:text="${consulta.motivo}">Motivo</td>
+
+        <td>
+            <div th:if="${consulta.prescricao != null}">
+                <ul>
+                    <li th:each="med : ${consulta.prescricao.listaMedicamentos}"
+                        th:text="${med.nome} + ' (' + ${med.dosagem} + ')'">
+                    </li>
+                </ul>
+
+                <!-- Botão editar -->
+                <form th:action="'/prescricoes/nova/' + ${consulta.id}" method="get" style="display:inline;">
+                    <button type="submit">Editar</button>
+                </form>
+
+                <!-- Botão apagar -->
+                <form th:action="'/prescricoes/apagar/' + ${consulta.id}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Remover prescrição desta consulta?')">Remover</button>
+                </form>
+            </div>
+            <div th:if="${consulta.prescricao == null}">
+                <em>Sem prescrição</em>
+            </div>
+        </td>
+
+        <td>
+            <form th:action="'/consultas/editar/' + ${consulta.id}" method="get" style="display:inline;">
+                <button type="submit">Editar</button>
+            </form>
+
+            <form th:action="'/consultas/apagar/' + ${consulta.id}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Apagar esta consulta?')">Apagar</button>
+            </form>
+
+            <form th:action="'/prescricoes/nova/' + ${consulta.id}" method="get" style="display:inline;">
+                <button type="submit">Adicionar Prescrição</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
 <a href="/consultas/novo">Adicionar nova consulta</a>
+<br><br>
+<a href="/">Voltar ao Menu principal</a>
 </body>
 </html>

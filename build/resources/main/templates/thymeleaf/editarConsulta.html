@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Consulta</title>
+</head>
+<body>
+<h1>Editar Consulta</h1>
+
+<form th:action="'/consultas/editar/' + ${consulta.id}" method="post">
+    <label>Paciente:</label>
+    <select name="pacienteId">
+        <option th:each="paciente : ${pacientes}"
+                th:value="${paciente.id}"
+                th:text="${paciente.nome}"
+                th:selected="${paciente.id} == ${consulta.paciente.id}">
+        </option>
+    </select><br>
+
+    <label>Médico:</label>
+    <select name="medicoId">
+        <option th:each="medico : ${medicos}"
+                th:value="${medico.id}"
+                th:text="${medico.nome}"
+                th:selected="${medico.id} == ${consulta.medico.id}">
+        </option>
+    </select><br>
+
+    <label>Data:</label>
+    <input type="text" name="data" th:value="${consulta.data}" required><br>
+
+    <label>Hora:</label>
+    <input type="text" name="hora" th:value="${consulta.hora}" required><br>
+
+    <label>Motivo:</label>
+    <input type="text" name="motivo" th:value="${consulta.motivo}" required><br>
+
+    <button type="submit">Guardar Alterações</button>
+</form>
+
+<br>
+<a href="/consultas">Voltar à Lista</a>
+</body>
+</html>

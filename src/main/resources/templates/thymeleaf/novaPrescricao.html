@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nova Prescrição</title>
+</head>
+<body>
+<h1>Nova Prescrição</h1>
+
+<form action="/prescricoes" method="post">
+
+    <input type="hidden" name="consultaId" th:value="${consulta.id}" />
+
+    <p>
+        Consulta ID: <span th:text="${consulta.id}"></span><br>
+        Paciente: <span th:text="${consulta.paciente.nome}"></span><br>
+        Médico: <span th:text="${consulta.medico.nome}"></span>
+    </p>
+
+    <label>Medicamentos:</label><br>
+    <div th:each="med : ${medicamentos}">
+        <input type="checkbox"
+               th:value="${med.id}"
+               name="medicamentos"
+               th:id="'med' + ${med.id}"
+               th:checked="${medicamentosSelecionados.contains(med.id)}" />
+        <label th:for="'med' + ${med.id}" th:text="${med.nome} + ' (' + ${med.dosagem} + ')'"></label><br>
+    </div>
+
+    <br>
+    <button type="submit">Adicionar Prescrição</button>
+</form>
+
+<br><a href="/consultas">Voltar ao menu anterior</a>
+</body>
+</html>

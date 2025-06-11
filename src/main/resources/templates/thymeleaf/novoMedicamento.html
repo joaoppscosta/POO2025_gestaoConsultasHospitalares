@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Novo Medicamento</title>
+</head>
+<body>
+<h1>Adicionar Medicamento</h1>
+
+<form action="/medicamentos" method="post">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="nome" required><br><br>
+
+    <label for="dosagem">Dosagem:</label>
+    <input type="text" name="dosagem" id="dosagem" required><br><br>
+
+    <button type="submit">Adicionar</button>
+</form>
+
+<br>
+<a href="/">Voltar ao menu principal</a>
+</body>
+</html>

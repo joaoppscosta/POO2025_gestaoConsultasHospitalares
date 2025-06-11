@@ -7,6 +7,9 @@ import io.ktor.server.request.*
 import io.ktor.http.*
 import io.ktor.server.thymeleaf.ThymeleafContent
 import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 
 fun Application.configureRouting() {
     routing {
@@ -27,11 +30,13 @@ fun Application.configureRouting() {
             call.respond(ThymeleafContent("medicos.html", mapOf("medicos" to listaMedicos)))
         }
 
+        // Adicionar novo médico GET
         get("/medicos/novo") {
             val especialidades = Especialidade.values().toList()
             call.respond(ThymeleafContent("novoMedico.html", mapOf("especialidades" to especialidades)))
         }
 
+        // Adicionar novo médico POST
         post("/medicos") {
             val params = call.receiveParameters()
 
@@ -44,9 +49,16 @@ fun Application.configureRouting() {
             }
         }
 
+        // Agenda dos Médicos (em JSON)
         get("/medicos/{id}/agenda") {
             val medicoId = call.parameters["id"]?.toIntOrNull()
-            val data = call.request.queryParameters["data"]
+            val dataISO = call.request.queryParameters["data"]
+            val data = try {
+                LocalDate.parse(dataISO).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, "Data inválida.")
+                return@get
+            }
 
             if (medicoId == null || data.isNullOrBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "ID ou data inválida.")
@@ -60,6 +72,7 @@ fun Application.configureRouting() {
             call.respond(agenda)
         }
 
+        // Editar médico GET
         get("/medicos/editar/{id}") {
             val medicoId = call.parameters["id"]?.toIntOrNull()
 
@@ -86,6 +99,7 @@ fun Application.configureRouting() {
             }
         }
 
+        // Editar médico POST
         post("/medicos/editar/{id}") {
             val params = call.receiveParameters()
             val listaMedicos = Repositorio.lerMedicos()
@@ -122,7 +136,7 @@ fun Application.configureRouting() {
             call.respondRedirect("/medicos")
         }
 
-        //TESTE ---------------------- TESTE
+        //TESTE ---------------------- TESTE (mostrar consultas do médico pelo ID)
         get("/medicos/{id}/consultas"){
             val medicoId = call.parameters["id"]?.toIntOrNull()
 
@@ -136,7 +150,7 @@ fun Application.configureRouting() {
             call.respond(consultasDoMedico)
         }
 
-        // Apagar Médicos
+        // Apagar Médico
         post("/medicos/apagar/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             if (id == null) {
@@ -439,6 +453,33 @@ fun Application.configureRouting() {
             call.respond(ThymeleafContent("medicamentos.html", mapOf("medicamentos" to lista)))
         }
 
+        get ("/medicamentos/novo") {
+            call.respond(ThymeleafContent("novoMedicamento.html", emptyMap()))
+        }
+
+        post("/medicamentos") {
+            val params = call.receiveParameters()
+
+            val nome = params["nome"] ?: ""
+            val dosagem = params["dosagem"] ?: ""
+
+            if (nome.isBlank() || dosagem.isBlank()) {
+                call.respond(HttpStatusCode.BadRequest, "Nome e dosagem são obrigatórios.")
+                return@post
+            }
+
+            val listaMedicamentos = Repositorio.lerMedicamentos()
+            val novoMedicamento = Medicamento(
+                id = (listaMedicamentos.maxOfOrNull { it.id } ?: 0) + 1,
+                nome = nome,
+                dosagem = dosagem
+            )
+
+            listaMedicamentos.add(novoMedicamento)
+            Repositorio.guardarMedicamentos(listaMedicamentos)
+
+            call.respondRedirect("/medicamentos")
+        }
 
         // ------------ PRESCRIÇÕES ------------
         get("/prescricoes/nova") {
@@ -538,6 +579,61 @@ fun Application.configureRouting() {
             Repositorio.guardarConsultas(consultas)
 
             call.respondRedirect("/consultas")
+        }
+
+        // ------------------- HISTÓRICO MÉDICO -------------------
+
+        get("/pacientes/{id}/historico") {
+            val pacienteId = call.parameters["id"]?.toIntOrNull()
+
+            if (pacienteId == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
+                return@get
+            }
+
+            val paciente = Repositorio.lerPacientes().find { it.id == pacienteId }
+            if (paciente == null) {
+                call.respond(HttpStatusCode.NotFound, "Paciente não encontrado.")
+                return@get
+            }
+
+            val consultas = Repositorio.lerConsultas().filter { it.paciente.id == pacienteId }
+            val prescricoes = consultas.mapNotNull { it.prescricao }
+            val exames = Repositorio.lerExames().filter { it.paciente.id == pacienteId }
+            val analises = Repositorio.lerAnalises().filter { it.paciente.id == pacienteId }
+            val cirurgias = Repositorio.lerCirurgias().filter { it.paciente.id == pacienteId }
+
+            val historico = HistoricoMedico(
+                paciente = paciente,
+                consultas = consultas,
+                prescricoes = prescricoes,
+                exames = exames,
+                analises = analises,
+                cirurgias = cirurgias
+            )
+
+            call.respond(
+                ThymeleafContent("historicoMedico.html", mapOf("historico" to historico))
+            )
+        }
+
+        // ------------------- CIRURGIAS -------------------
+
+        get("/cirurgias") {
+            call.respond(ThymeleafContent("cirurgias.html", mapOf("cirurgias" to Repositorio.lerCirurgias())))
+        }
+
+
+        // ------------------- EXAMES -------------------
+
+        get("/exames") {
+            call.respond(ThymeleafContent("exames.html", mapOf("exames" to Repositorio.lerExames())))
+        }
+
+        // ------------------- ANALISES -------------------
+
+        get("/analises") {
+            call.respond(ThymeleafContent("analises.html", mapOf("analises" to Repositorio.lerAnalises())))
         }
     }
 }

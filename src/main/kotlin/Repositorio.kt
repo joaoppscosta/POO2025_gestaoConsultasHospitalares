@@ -63,6 +63,48 @@ object Repositorio {
     fun guardarMedicamentos(lista: List<Medicamento>) {
         File(caminhoMedicamentos).writeText(json.encodeToString(lista))
     }
+
+    // ----------- EXAMES -----------
+    private const val caminhoExames ="./src/main/resources/exames/listaExames.json"
+
+    fun lerExames(): MutableList<Exame> {
+        if (!File(caminhoExames).exists()) {
+            File(caminhoExames).writeText("[]")
+        }
+        return json.decodeFromString(File(caminhoExames).readText())
+    }
+
+    fun guardarExames(lista: List<Exame>) {
+        File(caminhoExames).writeText(json.encodeToString(lista))
+    }
+
+    // ----------- ANALISES -----------
+    private const val caminhoAnalises ="./src/main/resources/analises/listaAnalises.json"
+
+    fun lerAnalises(): MutableList<Analise> {
+        if (!File(caminhoAnalises).exists()) {
+            File(caminhoAnalises).writeText("[]")
+        }
+        return json.decodeFromString(File(caminhoAnalises).readText())
+    }
+
+    fun guardarAnalises(lista: List<Analise>) {
+        File(caminhoAnalises).writeText(json.encodeToString(lista))
+    }
+
+    // ----------- CIRURGIAS -----------
+    private const val caminhoCirurgia ="./src/main/resources/cirurgias/listaCirurgias.json"
+
+    fun lerCirurgias(): MutableList<Cirurgia> {
+        if (!File(caminhoCirurgia).exists()) {
+            File(caminhoCirurgia).writeText("[]")
+        }
+        return json.decodeFromString(File(caminhoCirurgia).readText())
+    }
+
+    fun guardarCirurgias(lista: List<Cirurgia>) {
+        File(caminhoCirurgia).writeText(json.encodeToString(lista))
+    }
 }
 
 

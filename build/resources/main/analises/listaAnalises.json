@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "tipo": "Hemograma Completo",
+    "paciente": {
+      "id": 1,
+      "nome": "Paulo Jorge",
+      "genero": "Masculino",
+      "contacto": "920000000",
+      "numeroUtente": "000111222",
+      "dataNascimento": "09/05/1988"
+    },
+    "medicoSolicitante": {
+      "id": 3,
+      "nome": "Dr. Quim Torpedo",
+      "especialidade": "ORTOPEDIA"
+    },
+    "data": "11/02/25",
+    "hora": "12:00",
+    "resultado": "Valores dentro do normal"
+  },
+  {
+    "id": 2,
+    "tipo": "Função Hepática",
+    "paciente": {
+      "id": 2,
+      "nome": "Miguel Lima",
+      "genero": "Masculino",
+      "contacto": "920000001",
+      "numeroUtente": "000111222",
+      "dataNascimento": "09/05/2001"
+    },
+    "medicoSolicitante": {
+      "id": 4,
+      "nome": "Dra. Andreia Coelho",
+      "especialidade": "DERMATOLOGIA"
+    },
+    "data": "10/02/25",
+    "hora": "16:00",
+    "resultado": "AST e ALT levemente elevadas"
+  },
+  {
+    "id": 3,
+    "tipo": "Colesterol Total",
+    "paciente": {
+      "id": 3,
+      "nome": "Ana Moura",
+      "genero": "Feminino",
+      "contacto": "913000030",
+      "numeroUtente": "114224343",
+      "dataNascimento": "12/02/1998"
+    },
+    "medicoSolicitante": {
+      "id": 1,
+      "nome": "Dr. João Costa",
+      "especialidade": "NEUROLOGIA"
+    },
+    "data": "15/02/25",
+    "hora": "14:00",
+    "resultado": "200 mg/dL"
+  }
+]

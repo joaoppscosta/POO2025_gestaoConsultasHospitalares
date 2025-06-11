@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Análises</title>
+</head>
+<body>
+<h1>Análises Clínicas</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Paciente</th>
+        <th>Médico Solicitante</th>
+        <th>Resultado</th>
+    </tr>
+    <tr th:each="a : ${analises}">
+        <td th:text="${a.id}"></td>
+        <td th:text="${a.tipo}"></td>
+        <td th:text="${a.data}"></td>
+        <td th:text="${a.hora}"></td>
+        <td th:text="${a.paciente.nome}"></td>
+        <td th:text="${a.medicoSolicitante.nome}"></td>
+        <td th:text="${a.resultado}"></td>
+    </tr>
+</table>
+
+<br>
+<a href="/">Voltar ao Menu principal</a>
+</body>
+</html>

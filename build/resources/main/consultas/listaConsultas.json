@@ -142,30 +142,7 @@
         },
         "data": "21/08/2025",
         "hora": "12:30",
-        "motivo": "OLa",
-        "prescricao": {
-            "id": 4,
-            "medico": {
-                "id": 2,
-                "nome": "Dr. Hélder Matos",
-                "especialidade": "ORTOPEDIA"
-            },
-            "paciente": {
-                "id": 4,
-                "nome": "Andreia Coelho",
-                "genero": "Feminino",
-                "contacto": "913220030",
-                "numeroUtente": "224224343",
-                "dataNascimento": "03/11/1994"
-            },
-            "listaMedicamentos": [
-                {
-                    "id": 4,
-                    "nome": "Tramadol",
-                    "dosagem": "500mg"
-                }
-            ]
-        }
+        "motivo": "Teste"
     },
     {
         "id": 5,

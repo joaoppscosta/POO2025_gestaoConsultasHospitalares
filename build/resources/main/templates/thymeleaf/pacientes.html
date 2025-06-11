@@ -34,6 +34,9 @@
             <form th:action="'/pacientes/apagar/' + ${paciente.id}" method="post" style="display:inline;">
                 <button type="submit" onclick="return confirm('Apagar este paciente?')">Apagar</button>
             </form>
+            <form th:action="'/pacientes/' + ${paciente.id} + '/historico'" method="get" style="display:inline;">
+                <button type="submit">Consultar Histórico</button>
+            </form>
         </td>
     </tr>
 </table>

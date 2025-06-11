@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Histórico Médico</title>
+</head>
+<body>
+<h1 th:text="'Histórico Médico de ' + ${historico.paciente.nome}"></h1>
+
+<h2>Consultas</h2>
+<ul>
+    <li th:each="c : ${historico.consultas}"
+        th:text="'[' + ${c.data} + ' ' + ${c.hora} + '] - Dr(a). ' + ${c.medico.nome} + ' | Motivo: ' + ${c.motivo}"></li>
+</ul>
+
+<h2>Prescrições</h2>
+<ul>
+    <li th:each="p : ${historico.prescricoes}"
+        th:text="'Prescrição do Dr(a). ' + ${p.medico.nome} + ': ' + ${#strings.listJoin(p.listaMedicamentos, ', ')}"></li>
+</ul>
+
+<h2>Exames</h2>
+<ul>
+    <li th:each="e : ${historico.exames}"
+        th:text="'[' + ${e.data} + ' ' + ${e.hora} + '] [' + ${e.tipo} + '] - Resultado: ' + ${e.resultado}"></li>
+</ul>
+
+<h2>Análises</h2>
+<ul>
+    <li th:each="a : ${historico.analises}"
+        th:text="'[' + ${a.data} + ' ' + ${a.hora} + '] [' + ${a.tipo} + '] - Resultado: ' + ${a.resultado}"></li>
+</ul>
+
+<h2>Cirurgias</h2>
+<ul>
+    <li th:each="c : ${historico.cirurgias}"
+        th:text="'[' + ${c.data} + ' ' + ${c.hora} + '] ' + ${c.descricao} + ' | Médico: ' + ${c.medicoResponsavel.nome}"></li>
+</ul>
+
+<br><br>
+<a href="/pacientes">Voltar à lista de pacientes</a>
+</body>
+</html>

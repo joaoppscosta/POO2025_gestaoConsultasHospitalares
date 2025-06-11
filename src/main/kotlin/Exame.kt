@@ -7,5 +7,7 @@ data class Exame(
     val tipo: String,
     val paciente: Paciente,
     val medicoSolicitante: Medico,
+    val data: String, // Formato "DD/MM/YYYY"
+    val hora: String, // Formato "HH:mm"
     val resultado: String
 )

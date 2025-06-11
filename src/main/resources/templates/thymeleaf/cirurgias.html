@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Cirurgias</title>
+</head>
+<body>
+<h1>Cirurgias</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Paciente</th>
+        <th>Médico Responsável</th>
+    </tr>
+    <tr th:each="c : ${cirurgias}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.descricao}"></td>
+        <td th:text="${c.data}"></td>
+        <td th:text="${c.hora}"></td>
+        <td th:text="${c.paciente.nome}"></td>
+        <td th:text="${c.medicoResponsavel.nome}"></td>
+    </tr>
+</table>
+
+<br>
+<a href="/">Voltar ao Menu principal</a>
+</body>
+</html>

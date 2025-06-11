@@ -28,6 +28,10 @@
             <form th:action="'/medicos/apagar/' + ${medico.id}" method="post" style="display:inline;">
                 <button type="submit" onclick="return confirm('Apagar este médico?')">Apagar</button>
             </form>
+            <form th:action="'/medicos/' + ${medico.id} + '/agenda'" method="get" style="display:inline;">
+                <button type="submit">Consultar Agenda</button>
+                <input type="date" name="data" required>
+            </form>
         </td>
     </tr>
 </table>

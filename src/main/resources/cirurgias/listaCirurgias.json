@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "descricao": "Cirurgia Plástica",
+    "data": "10/06/2024",
+    "hora": "09:00",
+    "paciente": {
+      "id": 1,
+      "nome": "Paulo Jorge",
+      "genero": "Masculino",
+      "contacto": "920000000",
+      "numeroUtente": "000111222",
+      "dataNascimento": "09/05/1988"
+    },
+    "medicoResponsavel": {
+      "id": 4,
+      "nome": "Dra. Andreia Coelho",
+      "especialidade": "DERMATOLOGIA"
+    }
+  },
+  {
+    "id": 2,
+    "descricao": "Histerectomia",
+    "data": "22/06/2024",
+    "hora": "11:30",
+    "paciente": {
+      "id": 2,
+      "nome": "Miguel Lima",
+      "genero": "Masculino",
+      "contacto": "920000001",
+      "numeroUtente": "000111222",
+      "dataNascimento": "09/05/2001"
+    },
+    "medicoResponsavel": {
+      "id": 1,
+      "nome": "Dr. João Costa",
+      "especialidade": "NEUROLOGIA"
+    }
+  },
+  {
+    "id": 3,
+    "descricao": "Artroscopia ao Joelho",
+    "data": "03/07/2024",
+    "hora": "14:00",
+    "paciente": {
+      "id": 3,
+      "nome": "Ana Moura",
+      "genero": "Feminino",
+      "contacto": "913000030",
+      "numeroUtente": "114224343",
+      "dataNascimento": "12/02/1998"
+    },
+    "medicoResponsavel": {
+      "id": 2,
+      "nome": "Dr. Hélder Matos",
+      "especialidade": "ORTOPEDIA"
+    }
+  }
+]

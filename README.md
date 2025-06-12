@@ -10,10 +10,10 @@ Este foi o nosso **primeiro projeto completo** em que trabalhámos com uma **fra
 Foi desenvolvido no âmbito da Unidade Curricular de **Programação Orientada a Objetos**, com o objetivo de aplicar conceitos de orientação a objetos em Kotlin, ao mesmo tempo que explorávamos o desenvolvimento web com uma arquitetura organizada.
 
 **Durante o desenvolvimento deste projeto, ganhámos experiência em:**
-- Estruturar o backend com o Ktor
-- Persistir dados com ficheiros `.json` usando `kotlinx.serialization`
-- Separar responsabilidades com serviços e repositórios
-- Criar páginas HTML com Thymeleaf e manipulá-las via formulários
+- Estruturação do backend com o Ktor
+- Persistência de dados com ficheiros `.json` utilizando `kotlinx.serialization`
+- Separação de responsabilidades com serviços e repositórios
+- Criação de páginas HTML com Thymeleaf e manipulação das mesmas através de formulários
 
 
 ---
@@ -49,7 +49,7 @@ Apesar disso, conseguimos implementar todas as funcionalidades principais de for
     - Associados a médicos e pacientes
 
 - **Histórico Médico**
-    - Visualização consolidada de todas as interações do paciente: consultas, exames, análises, prescrições, cirurgias
+    - Visualização consolidada de todas as interações do paciente: consultas, exames, análises, prescrições e cirurgias
 
 ---
 

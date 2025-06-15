@@ -1,5 +1,10 @@
 # Sistema de Gestão de Consultas Hospitalares
-**Autores:** Hélder Matos e João Costa  
+**Autores:**
+
+HÉLDER MANUEL OLIVEIRA MATOS – 127103
+
+JOÃO PEDRO PINHO DA SILVA COSTA – 126958
+
 **Curso:** CTeSP em Desenvolvimento de Software (ESAN - 2024/2025 - Estarreja)
 
 ---

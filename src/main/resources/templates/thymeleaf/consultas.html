@@ -15,51 +15,51 @@
         <th>Data</th>
         <th>Hora</th>
         <th>Motivo</th>
+        <th>Estado</th>
         <th>Prescrição</th>
         <th>Ações</th>
     </tr>
 
-    <tr th:each="consulta : ${consultas}">
-        <td th:text="${consulta.id}">ID</td>
-        <td th:text="${consulta.paciente.nome}">Paciente</td>
-        <td th:text="${consulta.medico.nome}">Médico</td>
-        <td th:text="${consulta.data}">Data</td>
-        <td th:text="${consulta.hora}">Hora</td>
-        <td th:text="${consulta.motivo}">Motivo</td>
+    <tr th:each="item : ${consultas}">
+        <td th:text="${item.consulta.id}">ID</td>
+        <td th:text="${item.consulta.paciente.nome}">Paciente</td>
+        <td th:text="${item.consulta.medico.nome}">Médico</td>
+        <td th:text="${item.consulta.data}">Data</td>
+        <td th:text="${item.consulta.hora}">Hora</td>
+        <td th:text="${item.consulta.motivo}">Motivo</td>
+        <td th:text="${item.estado}"></td> <!-- Estado: AGENDADA ou CONCLUÍDA -->
 
         <td>
-            <div th:if="${consulta.prescricao != null}">
+            <div th:if="${item.consulta.prescricao != null}">
                 <ul>
-                    <li th:each="med : ${consulta.prescricao.listaMedicamentos}"
+                    <li th:each="med : ${item.consulta.prescricao.listaMedicamentos}"
                         th:text="${med.nome} + ' (' + ${med.dosagem} + ')'">
                     </li>
                 </ul>
 
-                <!-- Botão editar -->
-                <form th:action="'/prescricoes/nova/' + ${consulta.id}" method="get" style="display:inline;">
+                <form th:action="'/prescricoes/nova/' + ${item.consulta.id}" method="get" style="display:inline;">
                     <button type="submit">Editar</button>
                 </form>
 
-                <!-- Botão apagar -->
-                <form th:action="'/prescricoes/apagar/' + ${consulta.id}" method="post" style="display:inline;">
+                <form th:action="'/prescricoes/apagar/' + ${item.consulta.id}" method="post" style="display:inline;">
                     <button type="submit" onclick="return confirm('Remover prescrição desta consulta?')">Remover</button>
                 </form>
             </div>
-            <div th:if="${consulta.prescricao == null}">
+            <div th:if="${item.consulta.prescricao == null}">
                 <em>Sem prescrição</em>
             </div>
         </td>
 
         <td>
-            <form th:action="'/consultas/editar/' + ${consulta.id}" method="get" style="display:inline;">
+            <form th:action="'/consultas/editar/' + ${item.consulta.id}" method="get" style="display:inline;">
                 <button type="submit">Editar</button>
             </form>
 
-            <form th:action="'/consultas/apagar/' + ${consulta.id}" method="post" style="display:inline;">
+            <form th:action="'/consultas/apagar/' + ${item.consulta.id}" method="post" style="display:inline;">
                 <button type="submit" onclick="return confirm('Apagar esta consulta?')">Apagar</button>
             </form>
 
-            <form th:action="'/prescricoes/nova/' + ${consulta.id}" method="get" style="display:inline;">
+            <form th:action="'/prescricoes/nova/' + ${item.consulta.id}" method="get" style="display:inline;">
                 <button type="submit">Adicionar Prescrição</button>
             </form>
         </td>

@@ -10,10 +10,9 @@ data class Consulta(
     val data: String, // Formato "DD/MM/YYYY"
     val hora: String, // Formato "HH:mm"
     val motivo: String,
-    val prescricao: Prescricao? = null,
-    val exames: List<Exame> = emptyList()
+    val prescricao: Prescricao? = null
 ) {
     override fun toString(): String {
-        return "ID: $id | Paciente: $paciente | Médico: $medico | Data: $data | Hora: $hora | Motivo: $motivo | Prescrição: $prescricao | Exames: $exames"
+        return "ID: $id | Paciente: $paciente | Médico: $medico | Data: $data | Hora: $hora | Motivo: $motivo | Prescrição: $prescricao"
     }
 }

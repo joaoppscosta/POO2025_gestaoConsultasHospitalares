@@ -14,8 +14,15 @@
 
 <h2>Prescrições</h2>
 <ul>
-    <li th:each="p : ${historico.prescricoes}"
-        th:text="'Prescrição do Dr(a). ' + ${p.medico.nome} + ': ' + ${#strings.listJoin(p.listaMedicamentos, ', ')}"></li>
+    <th:block th:each="p : ${historico.prescricoes}">
+        <li>
+            <span th:text="'Prescrição do Dr(a). ' + ${p.medico.nome} + ':'"></span>
+            <ul>
+                <li th:each="med : ${p.listaMedicamentos}"
+                    th:text="${med.nome} + ' - ' + ${med.dosagem}"></li>
+            </ul>
+        </li>
+    </th:block>
 </ul>
 
 <h2>Exames</h2>

@@ -14,29 +14,26 @@ import java.time.format.DateTimeFormatter
 fun Application.configureRouting() {
     routing {
 
-        // Página inicial
+        // Página inicial com o menu principal
         get("/") {
             call.respond(ThymeleafContent("index.html", emptyMap<String, Any>()))
         }
 
         // ------------ MÉDICOS ------------
 
-        get("/listaMedicos") {
-            call.respond(Repositorio.lerMedicos())
-        }
-
+        // Mostra página com a lista de médicos em formato HTML
         get("/medicos") {
             val listaMedicos = Repositorio.lerMedicos()
             call.respond(ThymeleafContent("medicos.html", mapOf("medicos" to listaMedicos)))
         }
 
-        // Adicionar novo médico GET
+        // Formulário para criar novo médico
         get("/medicos/novo") {
             val especialidades = Especialidade.values().toList()
             call.respond(ThymeleafContent("novoMedico.html", mapOf("especialidades" to especialidades)))
         }
 
-        // Adicionar novo médico POST
+        // Submete novo médico (dados vindos do formulário)
         post("/medicos") {
             val params = call.receiveParameters()
 
@@ -49,7 +46,8 @@ fun Application.configureRouting() {
             }
         }
 
-        // Agenda dos Médicos (em JSON)
+
+        // Mostra a agenda (horários disponíveis/ocupados) de um médico para um certo dia (em JSON)
         get("/medicos/{id}/agenda") {
             val medicoId = call.parameters["id"]?.toIntOrNull()
             val dataISO = call.request.queryParameters["data"]
@@ -72,7 +70,8 @@ fun Application.configureRouting() {
             call.respond(agenda)
         }
 
-        // Editar médico GET
+
+        // Página de edição de um médico
         get("/medicos/editar/{id}") {
             val medicoId = call.parameters["id"]?.toIntOrNull()
 
@@ -99,7 +98,7 @@ fun Application.configureRouting() {
             }
         }
 
-        // Editar médico POST
+        // Submete alterações da edição do médico
         post("/medicos/editar/{id}") {
             val params = call.receiveParameters()
             val listaMedicos = Repositorio.lerMedicos()
@@ -136,7 +135,7 @@ fun Application.configureRouting() {
             call.respondRedirect("/medicos")
         }
 
-        //TESTE ---------------------- TESTE (mostrar consultas do médico pelo ID)
+        //TESTE ---------------------- TESTE ---- Mostra todas as consultas associadas a um médico
         get("/medicos/{id}/consultas"){
             val medicoId = call.parameters["id"]?.toIntOrNull()
 
@@ -150,7 +149,7 @@ fun Application.configureRouting() {
             call.respond(consultasDoMedico)
         }
 
-        // Apagar Médico
+        // Apaga médico (só se não tiver consultas associadas)
         post("/medicos/apagar/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             if (id == null) {
@@ -188,19 +187,18 @@ fun Application.configureRouting() {
 
         // ------------ PACIENTES ------------
 
-        get("/listaPacientes") {
-            call.respond(Repositorio.lerPacientes())
-        }
-
+        // Página com lista de pacientes (HTML)
         get("/pacientes") {
             val listaPacientes = Repositorio.lerPacientes()
             call.respond(ThymeleafContent("pacientes.html", mapOf("pacientes" to listaPacientes)))
         }
 
+        // Formulário de criação de novo paciente
         get("/pacientes/novo") {
             call.respond(ThymeleafContent("novoPaciente.html", emptyMap<String, Any>()))
         }
 
+        // Submete novo paciente
         post("/pacientes") {
             val params = call.receiveParameters()
 
@@ -213,6 +211,7 @@ fun Application.configureRouting() {
             }
         }
 
+        // Página de edição de paciente
         get("/pacientes/editar/{id}") {
             val pacienteId = call.parameters["id"]?.toIntOrNull()
 
@@ -233,6 +232,7 @@ fun Application.configureRouting() {
             }
         }
 
+        // Submete alterações ao paciente
         post("/pacientes/editar/{id}") {
             val params = call.receiveParameters()
 
@@ -265,8 +265,8 @@ fun Application.configureRouting() {
             call.respondRedirect("/pacientes")
         }
 
-        // Apagar Pacientes
 
+        // Apaga paciente (só se não tiver consultas associadas)
         post("/pacientes/apagar/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             if (id == null) {
@@ -287,7 +287,7 @@ fun Application.configureRouting() {
                         )
                     )
                 )
-                return@post // 🔥 Impede que continue
+                return@post
             }
 
             val listaPacientes = Repositorio.lerPacientes()
@@ -304,20 +304,31 @@ fun Application.configureRouting() {
 
         // ------------ CONSULTAS ------------
 
-        get("/listaConsultas") {
-            call.respond(Repositorio.lerConsultas())
-        }
+        // Rota GET para a listagem de todas as consultas.
+        // Lê as consultas do repositório e, para cada uma, cria um mapa com:
+        // - a própria consulta
+        // - o estado atual da consulta (ex: "AGENDADA", "CONCLUÍDA") com base na data e hora.
+        // Este mapa é depois enviado para o template HTML, que pode assim apresentar o estado ao lado da consulta.
 
         get("/consultas") {
             val listaConsultas = Repositorio.lerConsultas()
-            call.respond(ThymeleafContent("consultas.html", mapOf("consultas" to listaConsultas)))
+            val listaComEstado = listaConsultas.map {
+                mapOf(
+                    "consulta" to it,
+                    "estado" to estadoConsulta(it.data, it.hora)
+                )
+            }
+
+            call.respond(ThymeleafContent("consultas.html", mapOf("consultas" to listaComEstado)))
         }
 
+        // Formulário para nova consulta
         get("/consultas/novo") {
             val listaMedicos = Repositorio.lerMedicos()
             call.respond(ThymeleafContent("novoConsulta.html", mapOf("medicos" to listaMedicos)))
         }
 
+        // Submete nova consulta (verifica conflitos)
         post("/consultas") {
             val params = call.receiveParameters()
 
@@ -330,22 +341,7 @@ fun Application.configureRouting() {
             }
         }
 
-        get("/listaConsultas/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null) {
-                call.respond(HttpStatusCode.BadRequest, "ID inválido.")
-                return@get
-            }
-
-            val consulta = Repositorio.lerConsultas().find { it.id == id }
-
-            if (consulta == null) {
-                call.respond(HttpStatusCode.NotFound, "Consulta não encontrada.")
-            } else {
-                call.respond(consulta)
-            }
-        }
-
+        // Página de edição de consulta
         get("/consultas/editar/{id}") {
             val consultaId = call.parameters["id"]?.toIntOrNull()
 
@@ -377,7 +373,7 @@ fun Application.configureRouting() {
             )
         }
 
-
+        // Submete alterações à consulta
         post("/consultas/editar/{id}") {
             val consultaId = call.parameters["id"]?.toIntOrNull()
             if (consultaId == null) {
@@ -426,7 +422,7 @@ fun Application.configureRouting() {
             call.respondRedirect("/consultas")
         }
 
-         //Apagar consultas
+        // Apaga uma consulta
         post("/consultas/apagar/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
 
@@ -448,15 +444,20 @@ fun Application.configureRouting() {
 
 
         // ------------ MEDICAMENTOS ------------
+
+        // Página HTML com lista de medicamentos
         get("/medicamentos") {
             val lista = Repositorio.lerMedicamentos()
             call.respond(ThymeleafContent("medicamentos.html", mapOf("medicamentos" to lista)))
         }
 
+
+        // Formulário de novo medicamento
         get ("/medicamentos/novo") {
             call.respond(ThymeleafContent("novoMedicamento.html", emptyMap()))
         }
 
+        // Submete novo medicamento
         post("/medicamentos") {
             val params = call.receiveParameters()
 
@@ -482,6 +483,8 @@ fun Application.configureRouting() {
         }
 
         // ------------ PRESCRIÇÕES ------------
+
+        // Formulário para criar nova prescrição associada a uma consulta
         get("/prescricoes/nova") {
             val consultaId = call.request.queryParameters["consultaId"]?.toIntOrNull()
             val consultas = Repositorio.lerConsultas()
@@ -499,6 +502,7 @@ fun Application.configureRouting() {
             )
         }
 
+        // Carrega o formulário para uma consulta específica
         get("/prescricoes/nova/{id}") {
             val consultaId = call.parameters["id"]?.toIntOrNull()
             if (consultaId == null) {
@@ -527,6 +531,7 @@ fun Application.configureRouting() {
             )
         }
 
+        // Apaga a prescrição associada à consulta
         post("/prescricoes/apagar/{id}") {
             val consultaId = call.parameters["id"]?.toIntOrNull()
             if (consultaId == null) {
@@ -550,6 +555,7 @@ fun Application.configureRouting() {
             call.respondRedirect("/consultas")
         }
 
+        // Submete nova prescrição (com medicamentos selecionados)
         post("/prescricoes") {
             val params = call.receiveParameters()
             val consultaId = params["consultaId"]?.toIntOrNull()
@@ -573,7 +579,7 @@ fun Application.configureRouting() {
                 listaMedicamentos = medicamentosSelecionados
             )
 
-            // Atualiza consulta com nova prescrição
+            // Atualiza a consulta com nova prescrição
             val consultaAtualizada = consulta.copy(prescricao = novaPrescricao)
             consultas[consultaIndex] = consultaAtualizada
             Repositorio.guardarConsultas(consultas)
@@ -582,6 +588,8 @@ fun Application.configureRouting() {
         }
 
         // ------------------- HISTÓRICO MÉDICO -------------------
+
+        // Mostra o histórico completo de um paciente inclui consultas, prescrições, exames, análises, cirurgias
 
         get("/pacientes/{id}/historico") {
             val pacienteId = call.parameters["id"]?.toIntOrNull()
@@ -619,6 +627,7 @@ fun Application.configureRouting() {
 
         // ------------------- CIRURGIAS -------------------
 
+        // Página HTML que mostra lista das cirurgias
         get("/cirurgias") {
             call.respond(ThymeleafContent("cirurgias.html", mapOf("cirurgias" to Repositorio.lerCirurgias())))
         }
@@ -626,12 +635,14 @@ fun Application.configureRouting() {
 
         // ------------------- EXAMES -------------------
 
+        // Página HTML que mostra lista dos exames
         get("/exames") {
             call.respond(ThymeleafContent("exames.html", mapOf("exames" to Repositorio.lerExames())))
         }
 
         // ------------------- ANALISES -------------------
 
+        // Página HTML que mostra lista das análises
         get("/analises") {
             call.respond(ThymeleafContent("analises.html", mapOf("analises" to Repositorio.lerAnalises())))
         }

@@ -5,6 +5,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.decodeFromString
 import java.io.File
 
+// O Repositorio é definido como um object (singleton = classe com uma única instância global) porque contém apenas funções utilitárias
+// para leitura e escrita de dados nos ficheiros JSON. Como não é necessário criar várias instâncias,
+// usar object evita instanciamento desnecessário e torna o acesso às funções mais simples.
+
 object Repositorio {
     private val json = Json { prettyPrint = true }
 
